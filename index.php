@@ -9,6 +9,7 @@
         |    (c) PhiXi, 2025 (https://github.com/phi-xi)   |
         |__________________________________________________|*/
 
+
     include_once "read-config.php";
 
     $_img_files         = scandir( $_TARGET_DIR );
