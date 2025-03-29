@@ -16,11 +16,14 @@
     $_type          = $_f[ "type" ];
     $_size          = $_f[ "size" ];
     $_msg           = "Upload failed";
+    $_img_count     = count( scandir( $_TARGET_DIR ) - 3 ); // ignore '.', '..', 'ims/'
 
-    if ( move_uploaded_file( $_f[ "tmp_name" ], $_target_file )
-        && ( $_size <= $_IMG_MAX_SIZE )
-        && ( substr( $_type, 0, 5 ) == "image" ) ){
-            $_msg = "Upload successful";
+    if ( ( $_size <= $_IMG_MAX_SIZE )
+        && ( substr( $_type, 0, 5 ) == "image" )
+        && ( $_img_count <= $_IMG_MAX_COUNT ) ){
+            if ( move_uploaded_file( $_f[ "tmp_name" ], $_target_file ) ){
+                $_msg = "Upload successful";
+            }
     }
 ?>
 <html>
