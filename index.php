@@ -1,4 +1,13 @@
 <?php
+        /*__________________________________________________
+        |                                                  |
+        |                   DirbIMS                        |
+        |      Directory-based Image Management System     |
+        |                                                  |
+        |                  index.php                       |
+        |                                                  |
+        |    (c) PhiXi, 2025 (https://github.com/phi-xi)   |
+        |__________________________________________________|*/
 
     include_once "read-config.php";
 
