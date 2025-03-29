@@ -11,13 +11,13 @@
 
     include_once "read-config.php";
 
-    $_F             = $_FILES[ "file" ];
-    $_target_file   = $_TARGET_DIR . basename( $_F[ "name" ] );
-    $_type          = $_F[ "type" ];
-    $_size          = $_F[ "size" ];
+    $_f             = $_FILES[ "file" ];
+    $_target_file   = $_TARGET_DIR . basename( $_f[ "name" ] );
+    $_type          = $_f[ "type" ];
+    $_size          = $_f[ "size" ];
     $_msg           = "Upload failed";
 
-    if ( move_uploaded_file( $_F[ "tmp_name" ], $_target_file )
+    if ( move_uploaded_file( $_f[ "tmp_name" ], $_target_file )
         && ( $_size <= $_IMG_MAX_SIZE )
         && ( substr( $_type, 0, 5 ) == "image" ) ){
             $_msg = "Upload successful";
