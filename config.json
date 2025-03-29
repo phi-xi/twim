@@ -1,0 +1,11 @@
+{
+    "max_image_size":   5000000,
+    "max_image_count":  100,
+    "allowed_formats":  [
+        "jpeg",
+        "jpg",
+        "png",
+        "gif",
+        "svg"
+    ]
+}
