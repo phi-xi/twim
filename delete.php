@@ -35,11 +35,13 @@
         <script type="text/javascript" src="twim.js"></script>
     </head>
     <body>
-        <div class="ims-main" style="padding-top: 30vh;">
-            <h1>TWIM | Tiny Website Image Manager <?php echo($_VERSION);?></h1>
-            <h2><?php echo($_msg);?></h2>
+        <div class="ims-main" style="padding-top: 20vh;">
+            <h1>TWIM</h1>
+            <h2>Tiny Website Image Manager <?php echo($_VERSION);?></h2>
+            <br>
+            <h3><?php echo($_msg);?></h3>
             <br><br><br>
-            <h2 id="msg" style="text-align:left;margin-left:45vw;">Please wait...</h2>
+            <h3 id="msg" style="text-align:left;margin-left:45vw;">Please wait...</h3>
         </div>
     </body>
     <script type="text/javascript">

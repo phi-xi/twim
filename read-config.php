@@ -18,5 +18,5 @@
     $_IMG_MAX_COUNT     = $_CONFIG[ "max_image_count" ];
     $_IMG_FORMATS       = $_CONFIG[ "allowed_formats" ];
     $_TARGET_DIR        = "../";
-    $_VERSION           = "1.03";
+    $_VERSION           = "1.04";
 ?>

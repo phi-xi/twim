@@ -43,7 +43,7 @@
     </head>
     <body>
         <div class="ims-main ims-dark">
-            <h1>TWIM | Tiny Website Image Manager <?php echo($_VERSION);?></h1>
+            <h1 style="font-size:1.25em;">TWIM | Tiny Website Image Manager <?php echo($_VERSION);?></h1>
             <div class="ims-gallery">
 <?php
     echo( $_img_gallery_src );
@@ -148,8 +148,45 @@
             }
             return false;
         }
-        function limit_img_size( img, limit ){  //TODO
-            //TODO
+        function reduce_selected_images(){
+            const files = FILE_SELECT.files;
+            let file_array = [];
+            for ( let i=0; i < files.length; i++ ){
+                let f = files[ i ];
+                if ( f.size > <?php echo( $_IMG_MAX_SIZE );?> ){
+                    file_array.push( reduce_img_to_size( f, <?php echo( $_IMG_MAX_SIZE );?> ) );
+                } else {
+                    file_array.push( f );
+                }
+            }
+            set_file_input_list( FILE_SELECT, file_array );
+        }
+        function set_file_input_list( file_input, file_array ){
+            const data_transfer = new DataTransfer();
+            for ( let i=0; i < file_array.length; i++){
+                data_transfer.items.add( file_array[ i ] );
+            }
+            const file_list = data_transfer.files;
+            file_input.files = file_list;
+        }
+    //TODO
+        function reduce_img_to_size( f, size ){
+            const reader = new FileReader();
+            reader.onload = ()=>{
+                const
+                    url = reader.result,
+                    can = U.mk( "canvas", "" ),
+                    img = U.mk( "img", "" ),
+                    ctx = can.getContext( "2d" );
+                img.src = url;
+                let w = img.width,
+                    h = img.height;
+                can.width = w;
+                can.height = h;
+                ctx.drawImage( img, 0, 0, w, h );
+                //U.r( "ims-gallery" )[0].appendChid( can );
+            };
+            reader.readAsDataURL( f );
         }
 
 
@@ -193,7 +230,7 @@
                 if ( !selection_includes_existing( files ) ){
                     let fr = new FileReader();
                     fr.onload = ()=>{
-                        //limit_img_size( fr.result, <?php echo( $_IMG_MAX_SIZE );?> );
+                        //reduce_selected_images();
                         BTN_SUBMIT_UPLOAD.click();
                     };
                     fr.readAsDataURL( files[0] );
