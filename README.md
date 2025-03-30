@@ -1,11 +1,11 @@
         /*__________________________________________________
         |                                                  |
-        |                   DirbIMS                        |
-        |      Directory-based Image Management System     |
+        |                     TWIM                         |
+        |          Tiny Website Image Manager              |
         |                                                  |
-        |                  index.php                       |
+        |                   README.md                      |
         |                                                  |
-        |    (c) PhiXi, 2025 (https://github.com/phi-xi)   |
+        |      (c) PhiXi, 2025 (github.com/phi-xi)         |
         |__________________________________________________|*/
 
 

@@ -15,6 +15,7 @@
     $_img_files         = scandir( $_TARGET_DIR );
     $_img_count         = 0;
     $_img_gallery_src   = "";
+    $_img_js_array      = "";
 
     for ( $i=0; $i < count( $_img_files ); $i++ ){
         $_img = $_img_files[ $i ];
@@ -25,8 +26,12 @@
         if ( !in_array( $_xp[1], $_IMG_FORMATS ) )  continue;
         $_img_src = $_TARGET_DIR . $_img;
         $_img_gallery_src .= "<div class=\"ims-thumbnail-wrap\"><img class=\"ims-thumbnail\" src=\"$_img_src\"><br>$_img</div> ";
+        $_img_js_array .= ( "\"" . preg_replace( "/(\.\.\/)/", "", $_img_src ) . "\"," );
         $_img_count++;
     }
+
+    $_img_js_array = substr( $_img_js_array, 0, -1 );
+
 ?>
 <html>
     <head>
@@ -50,7 +55,7 @@
                     <b style="font-size:1.2rem;"><?php echo($_img_count);?></b>
                     <label class="ims-label">Max. image count</label>
                     <b style="font-size:1.2rem;"><?php echo($_IMG_MAX_COUNT);?></b>
-                    <label class="ims-label">Max. image size<br>(reduces larger images)</label>
+                    <label class="ims-label">Max. image size</label>
                     <b style="font-size:1.2rem;"><?php echo($_IMG_MAX_SIZE/1000000);?> MB</b>
                 </div>
 
@@ -59,8 +64,8 @@
                         <label class="ims-label" for="mode-dark">Dark mode</label>
                         <input name="mode-dark" id="mode-dark" class="ims-input" type="checkbox" checked>
                         <br><br>
-                        <label class="ims-label" for="mode-xl">XL thumbs</label>
-                        <input name="mode-xl" id="mode-xl" class="ims-input" type="checkbox">
+                        <label class="ims-label" for="slider-thumb-size">Thumb size</label>
+                        <input name="slider-thumb-size" id="slider-thumb-size" class="ims-input" type="range" min="1" max="4">
                     </form>
                 </div>
 
@@ -85,7 +90,7 @@
                 </div>
 
                 <div class="inline" style="display: inline-block; margin-right: 1rem; width: 20em; vertical-align: top;">
-                        <label class="ims-label">___/ A b o u t \___</label>All file operations have immediate effect on the server's directory. Images exceeding max. size are reduced as much as necessary. Note that the file selector opened on press
+                        <label class="ims-label">\_________/ A b o u t \_________/</label>All file operations have immediate effect on the server's directory. Images exceeding max. size are reduced as much as necessary. Note that the file selector opened on press
                         <br><b style="line-height:1em; margin-left: 5em;">&#x1f5c1; Upload</b>
                         <br>supports selection of multiple files (select with CTRL pressed).
                         <hr style="border-color:#F50;"><b>&#x00a9; &Phi;&Xi;PhiXi</b>|2025|github.com/phi-xi
@@ -95,12 +100,13 @@
     </body>
     <script type="text/javascript">
         const
+            EXISTING_FILES      = [ <?php echo( $_img_js_array );?> ],
             MAIN                = U.r( "ims-main" )[0],
             FORM                = U.r( "ims-form" ),
             IMG_THUMB           = U.r( "ims-thumbnail" ),
             CTRL                = U.r( "ims-ctrl" )[0].children,
             CHECKBOX_1          = U.r( "mode-dark" ),
-            CHECKBOX_2          = U.r( "mode-xl" ),
+            SLIDER_1            = U.r( "slider-thumb-size" ),
             FILES               = U.r( "files" ),
             BTN_DELETE          = U.r( "btn-delete" ),
             BTN_UPLOAD          = U.r( "btn-upload" ),
@@ -133,6 +139,18 @@
         function update_selection(){
             FILES.value = get_selected().toString();
         }
+        function file_exists( file_name ){
+            return EXISTING_FILES.includes( file_name );
+        }
+        function selection_includes_existing( file_list_obj ){
+            for ( let i=0; i < file_list_obj.length; i++ ){
+                if ( file_exists( file_list_obj[ i ].name ) ) return true;
+            }
+            return false;
+        }
+        function limit_img_size( img, limit ){  //TODO
+            //TODO
+        }
 
 
         for ( let i=0; i < IMG_THUMB.length; i++ ){
@@ -151,10 +169,11 @@
             MAIN.classList.toggle( "ims-dark" );
         } );
 
-        CHECKBOX_2.addEventListener( "change", function(){
+        SLIDER_1.addEventListener( "input", function(){
+            const v = this.value;
             for ( let i=0; i < IMG_THUMB.length; i++ ){
-                IMG_THUMB[ i ].classList.toggle( "ims-thumbnail-xl" );
-                IMG_THUMB[ i ].parentElement.classList.toggle( "ims-thumbnail-xl" );
+                IMG_THUMB[ i ].parentElement.style.width = ( 1 + 5 * v ).toString() + "%";
+                IMG_THUMB[ i ].style.width = "100%";
             }
         } );
 
@@ -169,10 +188,28 @@
         } );
 
         FILE_SELECT.addEventListener( "change", ()=>{
-            if ( FILE_SELECT.files.length > 0 ) BTN_SUBMIT_UPLOAD.click();
+            let files = FILE_SELECT.files;
+            if ( files.length > 0 ){
+                if ( !selection_includes_existing( files ) ){
+                    let fr = new FileReader();
+                    fr.onload = ()=>{
+                        //limit_img_size( fr.result, <?php echo( $_IMG_MAX_SIZE );?> );
+                        BTN_SUBMIT_UPLOAD.click();
+                    };
+                    fr.readAsDataURL( files[0] );
+                } else {
+                    U.ui.dialog.toast( "One or more of selected files already existing - delete them first" );
+                }
+            }
         } );
 
         hide_btn_delete();
+
+        setTimeout( ()=>{
+            SLIDER_1.value = 1;
+            let evt = new Event( "input" );
+            SLIDER_1.dispatchEvent( evt );
+        }, 200 );
 
     </script>
 </html>
