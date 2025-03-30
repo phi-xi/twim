@@ -88,7 +88,7 @@
                         <label class="ims-label">___/ A b o u t \___</label>All file operations have immediate effect on the server's directory. Images exceeding max. size are reduced as much as necessary. Note that the file selector opened on press
                         <br><b style="line-height:1em; margin-left: 5em;">&#x1f5c1; Upload</b>
                         <br>supports selection of multiple files (select with CTRL pressed).
-                        <br><b>&#x00a9; &Phi;&Xi;PhiXi</b>|2025|github.com/phi-xi
+                        <hr style="border-color:#F50;"><b>&#x00a9; &Phi;&Xi;PhiXi</b>|2025|github.com/phi-xi
                 </div>
             </div>
         </div>
