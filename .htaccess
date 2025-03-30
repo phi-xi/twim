@@ -1,0 +1,15 @@
+#        ____________________________________________________
+#        |                                                  |
+#        |                   DirbIMS                        |
+#        |      Directory-based Image Management System     |
+#        |                                                  |
+#        |                  .htaccess                       |
+#        |__________________________________________________|
+
+
+## Disable remote access by default (comment out for productive):
+require local
+
+
+## Allow user MY_USERNAME to manage this directory (enable this for secure config!)
+#require user MY_USERNAME
