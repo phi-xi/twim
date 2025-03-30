@@ -1,12 +1,11 @@
-
         /*__________________________________________________
         |                                                  |
-        |                   DirbIMS                        |
-        |      Directory-based Image Management System     |
+        |                     TWIM                         |
+        |          Tiny Website Image Manager              |
         |                                                  |
-        |                  index.php                       |
+        |                   twim.css                       |
         |                                                  |
-        |    (c) PhiXi, 2025 (https://github.com/phi-xi)   |
+        |      (c) PhiXi, 2025 (github.com/phi-xi)         |
         |__________________________________________________|*/
 
 
@@ -52,6 +51,11 @@ body, h1 {
     width: 100%;
     height: 100%;
 }
+.ims-main,
+.ims-input {
+     font-family: monospace;
+     font-size: 14pt;
+}
 .ims-dark {
     background-color: var(--black);
     color: var(--gray-lite);
@@ -81,7 +85,7 @@ body, h1 {
     border: solid 1px var(--gray-lite);
 }
 .ims-ctrl {
-    width: 95vw;
+    font-size: 0.8rem;
     margin-top: 0.5rem;
     border: solid 1px var(--gray-lite);
 }
@@ -103,14 +107,6 @@ body, h1 {
 .ims-input,
 .ims-label {
     display: block;
-}
-
-.ims-main,
-.ims-gallery,
-.ims-ctrl,
-.ims-input {
-     font-family: monospace;
-     font-size: 14pt;
 }
 .ims-gallery,
 .ims-ctrl,
