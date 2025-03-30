@@ -1,12 +1,12 @@
 <?php
         /*__________________________________________________
         |                                                  |
-        |                   DirbIMS                        |
-        |      Directory-based Image Management System     |
+        |                     TWIM                         |
+        |          Tiny Website Image Manager              |
         |                                                  |
-        |                  index.php                       |
+        |                read-config.php                   |
         |                                                  |
-        |    (c) PhiXi, 2025 (https://github.com/phi-xi)   |
+        |      (c) PhiXi, 2025 (github.com/phi-xi)         |
         |__________________________________________________|*/
 
 
@@ -18,4 +18,5 @@
     $_IMG_MAX_COUNT     = $_CONFIG[ "max_image_count" ];
     $_IMG_FORMATS       = $_CONFIG[ "allowed_formats" ];
     $_TARGET_DIR        = "../";
+    $_VERSION           = "1.01";
 ?>
