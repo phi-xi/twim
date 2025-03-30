@@ -1,12 +1,12 @@
 <?php
         /*__________________________________________________
         |                                                  |
-        |                   DirbIMS                        |
-        |      Directory-based Image Management System     |
+        |                     TWIM                         |
+        |          Tiny Website Image Manager              |
         |                                                  |
         |                  index.php                       |
         |                                                  |
-        |    (c) PhiXi, 2025 (https://github.com/phi-xi)   |
+        |      (c) PhiXi, 2025 (github.com/phi-xi)         |
         |__________________________________________________|*/
 
 
@@ -18,10 +18,11 @@
 
     for ( $i=0; $i < count( $_img_files ); $i++ ){
         $_img = $_img_files[ $i ];
-        if ( $_img == ".." || $_img == "." ) continue;
         $_xp = explode( ".", $_img );
-        if ( count( $_xp ) < 2 ) continue;
-        if ( !in_array( $_xp[1], $_IMG_FORMATS ) ) continue;
+        if ( $_img == ".." || $_img == "." )        continue;
+        if ( substr( $_img, -1 ) == "/" )           continue;
+        if ( count( $_xp ) < 2 )                    continue;
+        if ( !in_array( $_xp[1], $_IMG_FORMATS ) )  continue;
         $_img_src = $_TARGET_DIR . $_img;
         $_img_gallery_src .= "<div class=\"ims-thumbnail-wrap\"><img class=\"ims-thumbnail\" src=\"$_img_src\"><br>$_img</div> ";
         $_img_count++;
@@ -30,14 +31,14 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
-        <title>DirbIMS | Directory-based Image Management System</title>
+        <title>TWIM | Tiny Website Image Manager</title>
         <link rel="icon" href="/img/icon-phixi.svg">
-        <link rel="stylesheet" href="ims.css?3">
-        <script type="text/javascript" src="/script/js/utils.js"></script>
+        <link rel="stylesheet" href="twim.css?2">
+        <script type="text/javascript" src="twim.js"></script>
     </head>
     <body>
         <div class="ims-main ims-dark">
-            <h1>DirbIMS | Directory-based Image Management System</h1>
+            <h1>TWIM | Tiny Website Image Manager <?php echo($_VERSION);?></h1>
             <div class="ims-gallery">
 <?php
     echo( $_img_gallery_src );
@@ -46,12 +47,13 @@
             <div class="ims-ctrl">
                 <div class="inline" style="margin-left: 1rem; vertical-align: top;">
                     <label class="ims-label">Image count</label>
-                    <b><?php echo($_img_count);?></b>
+                    <b style="font-size:1.2rem;"><?php echo($_img_count);?></b>
                     <label class="ims-label">Max. image count</label>
-                    <b><?php echo($_IMG_MAX_COUNT);?></b>
+                    <b style="font-size:1.2rem;"><?php echo($_IMG_MAX_COUNT);?></b>
                     <label class="ims-label">Max. image size<br>(reduces larger images)</label>
-                    <b><?php echo($_IMG_MAX_SIZE/1000000);?> MB</b>
+                    <b style="font-size:1.2rem;"><?php echo($_IMG_MAX_SIZE/1000000);?> MB</b>
                 </div>
+
                 <div class="inline" style="vertical-align: top;">
                     <form class="ims-form">
                         <label class="ims-label" for="mode-dark">Dark mode</label>
@@ -61,24 +63,32 @@
                         <input name="mode-xl" id="mode-xl" class="ims-input" type="checkbox">
                     </form>
                 </div>
+
                 <div class="inline" style="vertical-align: top;">
                     <form class="ims-form" enctype="multipart/form-data" action="upload.php" method="POST">
                         <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo($_IMG_MAX_SIZE);?>">
-                        <label class="ims-label" for="file">Select files</label>
-                        <input name="file" id="file" class="ims-input" type="file" multiple>
-                        <input class="ims-input" type="submit" id="btn-submit-upload" value="&#x2912; Upload" style="display:none;">
+                        <input name="file[]" id="file" class="ims-input" type="file" style="display:none;" multiple>
+                        <input class="ims-input" type="submit" id="btn-submit-upload" value="&#x1f5c1; Upload" style="display:none;">
                     </form>
                     <br>
                     <form class="ims-form" action="javascript:void(0)">
-                        <input class="ims-input" type="submit" id="btn-upload" value="&#x2912; Upload" style="display:inline-block">
+                        <input class="ims-input" type="submit" id="btn-upload" value="&#x1f5c1; Upload" style="display:inline-block">
                         <input class="ims-input" type="submit" id="btn-delete" value="&#x1f5d1; Delete" style="display:inline-block">
                     </form>
                 </div>
+
                 <div class="inline" style="vertical-align: top;">
                     <form class="ims-form" enctype="multipart/form-data" action="delete.php" method="POST">
                         <input class="ims-input" type="hidden" id="files" name="files">
                         <input class="ims-input" type="submit" id="btn-submit-delete" value="&#x1f5d1; Delete" style="display:none;">
                     </form>
+                </div>
+
+                <div class="inline" style="display: inline-block; margin-right: 1rem; width: 20em; vertical-align: top;">
+                        <label class="ims-label">___/ A b o u t \___</label>All file operations have immediate effect on the server's directory. Images exceeding max. size are reduced as much as necessary. Note that the file selector opened on press
+                        <br><b style="line-height:1em; margin-left: 5em;">&#x1f5c1; Upload</b>
+                        <br>supports selection of multiple files (select with CTRL pressed).
+                        <br><b>&#x00a9; &Phi;&Xi;PhiXi</b>|2025|github.com/phi-xi
                 </div>
             </div>
         </div>
@@ -95,7 +105,8 @@
             BTN_DELETE          = U.r( "btn-delete" ),
             BTN_UPLOAD          = U.r( "btn-upload" ),
             BTN_SUBMIT_DELETE   = U.r( "btn-submit-delete" ),
-            BTN_SUBMIT_UPLOAD   = U.r( "btn-submit-upload" );
+            BTN_SUBMIT_UPLOAD   = U.r( "btn-submit-upload" ),
+            FILE_SELECT         = U.r( "file" );
 
         function __display( e, state=true ){
             e.style.display = ( state ) ? "" : "none";
@@ -148,18 +159,17 @@
         } );
 
         BTN_UPLOAD.addEventListener( "click", function(){
-            const files = new FormData( FORM[1] ).getAll( "file" );
-            if ( files[0].name != "" ){
-                BTN_SUBMIT_UPLOAD.click();
-            } else {
-                U.ui.dialog.toast( "No file selected" );
-            }
+            FILE_SELECT.click();
         } );
 
         BTN_DELETE.addEventListener( "click", function(){
             U.ui.dialog.confirm( "Delete selected?", ()=>{
                 BTN_SUBMIT_DELETE.click();
             }, ()=>{} );
+        } );
+
+        FILE_SELECT.addEventListener( "change", ()=>{
+            if ( FILE_SELECT.files.length > 0 ) BTN_SUBMIT_UPLOAD.click();
         } );
 
         hide_btn_delete();
