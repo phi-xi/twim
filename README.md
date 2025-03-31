@@ -10,7 +10,7 @@
 
 
     Place a copy of this folder into the server's WWW directory
-    with the images to be managed. The 'ims' directory contains
+    with the images to be managed. The 'twim/' directory contains
     a .htaccess file to protect the directory; note to edit
     this file for secure configuration.
 
