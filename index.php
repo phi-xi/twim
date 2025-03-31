@@ -13,20 +13,22 @@
     include_once "read-config.php";
 
     $_img_files         = scandir( $_TARGET_DIR );
+    $_img_files_count   = count( $_img_files );
     $_img_count         = 0;
     $_img_gallery_src   = "";
     $_img_js_array      = "";
 
-    for ( $i=0; $i < count( $_img_files ); $i++ ){
-        $_img = $_img_files[ $i ];
-        $_xp = explode( ".", $_img );
-        if ( $_img == ".." || $_img == "." )        continue;
-        if ( substr( $_img, -1 ) == "/" )           continue;
-        if ( count( $_xp ) < 2 )                    continue;
-        if ( !in_array( $_xp[1], $_IMG_FORMATS ) )  continue;
-        $_img_src = $_TARGET_DIR . $_img;
-        $_img_gallery_src .= "<div class=\"ims-thumbnail-wrap\"><img class=\"ims-thumbnail\" src=\"$_img_src\"><br>$_img</div> ";
-        $_img_js_array .= ( "\"" . preg_replace( "/(\.\.\/)/", "", $_img_src ) . "\"," );
+    for ( $i=0; $i < $_img_files_count; $i++ ){
+        $_img           = $_img_files[ $i ];
+        $_xp            = explode( ".", $_img );
+        $_file_type     = strtolower( $_xp[1] );
+        if ( $_img == ".." || $_img == "." )            continue;
+        if ( substr( $_img, -1 ) == "/" )               continue;
+        if ( count( $_xp ) < 2 )                        continue;
+        if ( !in_array( $_file_type, $_IMG_FORMATS ) )  continue;
+        $_img_src           = $_TARGET_DIR . $_img;
+        $_img_gallery_src   .= get_thumbnail_HTML( $_img );
+        $_img_js_array      .= ( "\"$_img\"," );
         $_img_count++;
     }
 
